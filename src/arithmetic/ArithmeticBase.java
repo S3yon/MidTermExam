@@ -1,39 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package arithmetic;
 
 import java.util.Scanner;
 
-/** This class takes String input plus,minus,divide and times
- * from user and execute the arithmetic operation
- * change the code to use enum instead String and mention the advantage of enum.
- * @author sivagamasrinivasan
- * 
- */
 public class ArithmeticBase 
 {
- public double x,y;
-    double calculate(double x, double y) 
+    public double x, y;
+
+    // Enum for arithmetic operations
+    public enum Operation {
+        PLUS, MINUS, TIMES, DIVIDE
+    }
+
+    double calculate(double x, double y, Operation operation) 
+    {
+        switch (operation) 
         {
-        Scanner sc =new Scanner(System.in);
-        System.out.println("Enter arithmetic operation to Perform: ");
-        String s= sc.next();
-        switch (s.toUpperCase()) 
-        {
-            case "PLUS":
+            case PLUS:
                 return x + y;
-            case "MINUS":
+            case MINUS:
                 return x - y;
-            case "TIMES":
+            case TIMES:
                 return x * y;
-            case "DIVIDE":
-                return x / y;
+            case DIVIDE:
+                if (y != 0) {
+                    return x / y;
+                } else {
+                    throw new ArithmeticException("Division by zero is not allowed.");
+                }
             default:
-                throw new AssertionError("Unknown operations " + this);
+                throw new AssertionError("Unknown operation: " + operation);
         }
     }
-   
+
+    public static void main(String[] args) 
+    {
+        ArithmeticBase arithmeticBase = new ArithmeticBase();
+        Scanner in = new Scanner(System.in);
+        
+        // Taking user inputs for the two numbers
+        System.out.print("Enter the first number: ");
+        double x = in.nextDouble();
+        System.out.print("Enter the second number: ");
+        double y = in.nextDouble();
+        
+        // Taking input for operation
+        System.out.println("Enter the arithmetic operation (PLUS, MINUS, TIMES, DIVIDE): ");
+        String operationInput = in.next().toUpperCase();
+        
+        // Convert string input to enum
+        Operation operation = Operation.valueOf(operationInput);
+        
+        // Perform the calculation and display the result
+        double result = arithmeticBase.calculate(x, y, operation);
+        System.out.println("Result: " + result);
+    }
 }
